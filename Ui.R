@@ -51,7 +51,7 @@ cities <- c("Global",levels(cities))
 shinyUI(
         fluidPage(
                 
-                titlePanel("SciMagViz Applet"),
+                titlePanel("Global Average Temprature Since 1900"),
                 
                 fluidRow(
                         column(2,wellPanel(

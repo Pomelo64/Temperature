@@ -58,7 +58,10 @@ shinyServer(function(input, output) {
                         geom_line(aes(x = year , y = avg_temp, color = city ),
                                   alpha = 0.3) + 
                         geom_line(aes(x = year, y = moving_avg, color = city)) + 
-                        theme_linedraw()
+                        theme_linedraw() + 
+                        coord_cartesian(xlim = brush_ranges$x,
+                                        ylim = brush_ranges$y,
+                                        expand = TRUE) 
                 
                 #ggsave(filename = "kos.png", plot = g , device = "png")
                 
@@ -67,6 +70,20 @@ shinyServer(function(input, output) {
         
         output$temp_plot <- renderPlot({
                 temp_plot_func()
+        })
+        
+        brush_ranges <- reactiveValues(x = NULL, y = NULL)
+        
+        observeEvent(input$temp_plot_dblclick, {
+                brush <- input$temp_plot_brush
+                if (!is.null(brush)) {
+                        brush_ranges$x <- c(brush$xmin, brush$xmax)
+                        brush_ranges$y <- c(brush$ymin, brush$ymax)
+                        
+                } else {
+                        brush_ranges$x <- NULL
+                        brush_ranges$y <- NULL
+                }
         })
         
         # ------ Table for data view
