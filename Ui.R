@@ -54,7 +54,7 @@ shinyUI(
                 titlePanel("Global Average Temprature Since 1900"),
                 
                 fluidRow(
-                        column(2,wellPanel(
+                        column(3,wellPanel(
                                 helpText("Data Filtering"),
                                 # Checkbox with several selection for filtering the data
                                 dropdownButton(
@@ -66,22 +66,35 @@ shinyUI(
                                                                     selected = "Global"))
                                         
                                 ),
-                                selectInput(inputId = "period",
-                                            label = "Periods of Moving Average",
-                                            choices = 1:100, 
-                                            selected = 10
+                                sliderInput(inputId = "since",
+                                            label = "Since year:",
+                                            min = 1900,
+                                            max = 2000, 
+                                            step = 1, 
+                                            value = 1900
+                                        
                                 ),
+                                actionButton("plot_button","Plot"), 
+                                tags$br(),
+                                
+                                sliderInput(inputId = "period",
+                                            label = "Periods of Moving Average",
+                                            min = 1, 
+                                            max = 100, 
+                                            step = 1, 
+                                            value = 10)
                                 
                                 
                                 
-                                actionButton("plot_button","Plot")
+                                
+                                
                                 
                                 
                         )
                         ),
                         
                         
-                        column(10,wellPanel(
+                        column(9,wellPanel(
                                 
                                 tabsetPanel(
                                         tabPanel("Data View",
