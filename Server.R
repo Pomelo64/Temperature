@@ -14,7 +14,10 @@ library(DT)
 
 # reading the data
 data <- read.csv("all.csv")
-
+global <- read.csv("World.csv")
+global$city <- "Global"
+global$country <- "Global"
+data <- rbind(global,data)
 
 shinyServer(function(input, output) {
         
@@ -25,6 +28,7 @@ shinyServer(function(input, output) {
                         filter(year>=1900) %>%
                         filter(city %in% input$selected_cities)
                 
+                #print(head(subset))
                 return(subset)
              }
         )
@@ -32,29 +36,36 @@ shinyServer(function(input, output) {
         # ---- adding simple moving average 
         
         dataset_sma <- reactive({
-               
-                
-                dataset <- dataset() %>% 
+
+                dataset_sma <- dataset() %>% 
                         group_by(city) %>%
-                        mutate(moving_avg = SMA(avg_temp, n = input$period))
+                        mutate(moving_avg = SMA(avg_temp, n = as.numeric(input$period)))
                 
-                return(dataset)
+                
+                return(dataset_sma)
                         
         })
         
         #--------- Visualization 
         
         temp_plot_func <- reactive({
-                dataset <- dataset_sma()
                 
-                ggplot(data = dataset) + 
+                dataset <- as.data.frame(dataset_sma())
+                
+                #print(head(dataset))
+                
+                g<- ggplot(data = dataset) + 
                         geom_line(aes(x = year , y = avg_temp, color = city ),
                                   alpha = 0.3) + 
                         geom_line(aes(x = year, y = moving_avg, color = city)) + 
                         theme_linedraw()
+                
+                #ggsave(filename = "kos.png", plot = g , device = "png")
+                
+                return(g)
         })
         
-        output$temp_plot <- reactive({
+        output$temp_plot <- renderPlot({
                 temp_plot_func()
         })
         
