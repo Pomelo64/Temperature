@@ -96,11 +96,9 @@ shinyUI(
                                                             )), 
                                                  downloadButton('download_plot', 'Download the Plot'),
                                                  tags$h3("PCA data table"),
-                                                 DT::dataTableOutput("brush_info_pca", width = "800px")
+                                                 DT::dataTableOutput("brush_info", width = "800px")
                                         ),
-                                        tabPanel("Correlations" 
-                                                 #plotOutput("correlation_plot", width = "800px",height = "600px")
-                                        ),
+                                       
                                         tabPanel("Help",
                                                  tags$iframe(src = "SciMagVizHelp.html", style="height:600px; width:100%")
                                                  
