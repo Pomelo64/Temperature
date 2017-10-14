@@ -19,6 +19,14 @@ global$city <- "Global"
 global$country <- "Global"
 data <- rbind(global,data)
 
+data$city <- paste(data$city, data$country , sep = " - ")
+data$country <- NULL
+print(head(data))
+
+cities <- unique(data$city)
+print(head(cities))
+
+
 shinyServer(function(input, output) {
         
         # ------- Filtering the main dataset 

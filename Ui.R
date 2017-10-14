@@ -1,9 +1,4 @@
 
-# This is the user-interface definition of a Shiny web application.
-# You can find out more about building applications with Shiny here:
-#
-# http://shiny.rstudio.com
-#
 
 library(shiny)
 #------ dropdownbuton func
@@ -41,10 +36,11 @@ dropdownButton <- function(label = "", status = c("default", "primary", "success
 #-----------------
 # for data preparation that may be used in selectInput
 # for deploying on shinyapps.io
-data <- read.csv("all.csv")
 
 cities <- unique(data$city)
-cities <- c("Global",levels(cities))
+print(head(cities))
+#cities <- c("Global - Global",(cities))
+#print(head(cities))
 
 #-----------------
 
@@ -63,7 +59,7 @@ shinyUI(
                                                  checkboxGroupInput(inputId = "selected_cities",
                                                                     label = "Choose",
                                                                     choices = cities,
-                                                                    selected = "Global"))
+                                                                    selected = "Global - Global"))
                                         
                                 ),
                                 sliderInput(inputId = "since",
@@ -74,20 +70,18 @@ shinyUI(
                                             value = 1900
                                         
                                 ),
-                                actionButton("plot_button","Plot"), 
-                                tags$br(),
                                 
                                 sliderInput(inputId = "period",
                                             label = "Periods of Moving Average",
                                             min = 1, 
                                             max = 100, 
                                             step = 1, 
-                                            value = 10)
+                                            value = 10),
                                 
                                 
+                                tags$br(),
                                 
-                                
-                                
+                                actionButton("plot_button","Plot")
                                 
                                 
                         )
